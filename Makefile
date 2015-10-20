@@ -10,68 +10,11 @@ RUSTCFLAGS=--target=$(ARCH)-unknown-redox.json \
 	-Z no-landing-pads \
 	-A dead-code -A deprecated \
 	-L $(BUILD)
-AS=nasm
-AWK=awk
-BASENAME=basename
-CUT=cut
-FIND=find
-LD=ld
-LDARGS=-m elf_$(ARCH)
-MAKE=make
-MKDIR=mkdir
-OBJDUMP=objdump
-RM=rm
-SED=sed
-SORT=sort
-VB=virtualbox
-VB_AUDIO="pulse"
-VBM=VBoxManage
-VBM_CLEANUP=\
-	if [ $$? -ne 0 ]; \
-	then \
-		if [ -d "$$HOME/VirtualBox VMs/Redox" ]; \
-		then \
-			echo "Redox directory exists, deleting..."; \
-			$(RM) -rf "$$HOME/VirtualBox VMs/Redox"; \
-		fi \
-	fi
 
 ifeq ($(OS),Windows_NT)
-	SHELL=windows\sh
-	LD=windows/$(ARCH)-elf-ld
-	AS=windows/nasm
-	AWK=windows/awk
-	BASENAME=windows/basename
-	CUT=windows/cut
-	FIND=windows/find
-	MAKE=windows/make
-	MKDIR=windows/mkdir
-	OBJDUMP=windows/objdump
-	RM=windows/rm
-	SED=windows/sed
-	SORT=windows/sort
-	VB="C:/Program Files/Oracle/VirtualBox/VirtualBox"
-	VB_AUDIO="dsound"
-	VBM="C:/Program Files/Oracle/VirtualBox/VBoxManage"
-	VBM_CLEANUP=\
-		if [ $$? -ne 0 ]; \
-		then \
-			if [ -d "$$USERPROFILE/VirtualBox VMs/Redox" ]; \
-			then \
-				echo "Redox directory exists, deleting..."; \
-				$(RM) -rf "$$USERPROFILE/VirtualBox VMs/Redox"; \
-			fi \
-		fi
+  include makeaux/windows.make
 else
-	UNAME := $(shell uname)
-	ifeq ($(UNAME),Darwin)
-		LD=$(ARCH)-elf-ld
-		OBJDUMP=$(ARCH)-elf-objdump
-        RUSTCFLAGS += -C ar=$(ARCH)-elf-ar -C linker=$(ARCH)-elf-linker
-		VB="/Applications/VirtualBox.app/Contents/MacOS/VirtualBox"
-		VB_AUDIO="coreaudio"
-		VBM="/Applications/VirtualBox.app/Contents/MacOS/VBoxManage"
-	endif
+  include makeaux/unix.make
 endif
 
 help:
