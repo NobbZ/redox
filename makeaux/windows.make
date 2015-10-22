@@ -1,3 +1,5 @@
+VBOXBASE="C:/Program Files/Oracle/VirtualBox"
+
 SHELL=windows\sh
 LD=windows/$(ARCH)-elf-ld
 AS=windows/nasm
@@ -11,9 +13,9 @@ OBJDUMP=windows/objdump
 RM=windows/rm
 SED=windows/sed
 SORT=windows/sort
-VB="C:/Program Files/Oracle/VirtualBox/VirtualBox"
+VB=$(VBOXBASE)/"VirtualBox"
 VB_AUDIO="dsound"
-VBM="C:/Program Files/Oracle/VirtualBox/VBoxManage"
+VBM=$(VBOXBASE)/"VBoxManage"
 VBM_CLEANUP=\
   if [ $$? -ne 0 ]; \
   then \
